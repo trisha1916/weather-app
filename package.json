@@ -1,0 +1,44 @@
+/
+function CreateWeatherJson(json) {
+
+var newJson = "";
+
+for (i = 0; i < json.list.length; i++) {
+
+cityId = json.list[i].id;
+
+cityName = json.list[i].name;
+
+temp = json.list[i].main.temp
+
+pressure = json.list[i].main.pressure
+
+humidity = json.list[i].main.humidity
+
+tempmin = json.list[i].main.temp_min
+
+tempmax = json.list[i].main.temp_max
+
+newJson = newJson + "{";
+
+newJson = newJson + "\"cityId\"" + ": " + cityId + ","
+
+newJson = newJson + "\"cityName\"" + ": " + "\"" + cityName + "\"" + ","
+
+newJson = newJson + "\"temp\"" + ": " + temp + ","
+
+newJson = newJson + "\"pressure\"" + ": " + pressure + ","
+
+newJson = newJson + "\"humidity\"" + ": " + humidity + ","
+
+newJson = newJson + "\"tempMin\"" + ": " + tempmin + ","
+
+newJson = newJson + "\"tempMax\"" + ": " + tempmax
+
+newJson = newJson + "},";
+
+}
+
+return "[" + newJson.slice(0, newJson.length - 1) + "]"
+
+}

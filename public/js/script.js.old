@@ -1,0 +1,127 @@
+var latitude = ""
+var longitude = ""
+
+$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&APPID=******************", function (data) {
+            var rawJson = JSON.stringify(data);
+            var json = JSON.parse(rawJson);
+            updateWeather(json); //Update Weather parameters
+        });
+$.getJSON("/data/openweather.json",function (data){
+            var rawJson = JSON.stringify(data);
+            var json = JSON.parse(rawJson);
+            updateWeather(json); location;
+})                                        ;
+let button = document.getElementById("get-location");
+let latText = document.getElementById("latitude");
+let longText = document.getElementById("longitude");
+
+button.addEventListener("GetWeather",function(getCurrentPosition) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    let lat = position.coords.latitude;
+    let long = position.coords.longitude;
+
+    latText.innerText = lat.toFixed(2);
+    longText.innerText = long.toFixed(2);
+  });
+});
+  $.getJSON("/data/openweather.json",function (data){
+        var rawJson = JSON.stringify(data);
+        var json = JSON.parse(rawJson);
+        updateWeather(json); location;
+      });
+$(function SetUnits () {
+  switch (localStorage.getItem("Units")) {
+    case null:
+      if (window.navigator.language == "en-US") {
+        localStorage.Units = "imperial";
+        $("#far").removeClass("inactive");
+        $("#far").addClass("active");
+      }
+      else {
+        localStorage.Units = "metric";
+        $("#cel").removeClass("inactive");
+        $("#cel").addClass("active");
+        $("#cel").removeClass("inactive");
+        $("#cel").addClass("active");
+      }
+    case "imperial":
+      $("#far").removeClass("inactive");
+      $("#far").addClass("active");
+    }
+});
+  function SetCelsius(){
+    localStorage.Units = "metric";
+    $("#cel").removeClass("inactive");
+    $("#cel").addClass("active");
+    $("#far").removeClass("active");
+    $("#far").addClass("inactive");
+    location.reload();
+}
+function SetFahrenheit() {
+    localStorage.Units = "imperial";
+    $("#far").removeClass("inactive");
+    $("#far").addClass("active");
+    $("#cel").removeClass("active");
+    $("#cel").addClass("inactive");
+    location.reload();
+}
+$(function geolocation (){
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(getcoordinates,showError);
+    }
+    else {
+        $("#weather").html("Geolocation is not supported by this browser.");
+    }
+});
+function getcoordinates(position) {
+    var lat=position.coords.latitude;
+    var long=position.coords.longitude;
+    var units=localStorage.getItem("Units");
+    var CurrentWeatherURL = "https://www.met.ie/"
+    var DailyForecastURL = "https://www.met.ie/"
+    getWeather(CurrentWeatherURL, DailyForecastURL, "F", "mph");
+}
+function showError(error) {
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      $("#weather").html("User denied the request for Geolocation.");
+    break;
+    case error.POSITION_UNAVAILABLE:
+      $("#weather").html("Location information is unavailable.");
+    break;
+    case error.TIMEOUT:
+      $("#weather").html("The request to get user location timed out.");
+    break;
+    case error.UNKNOWN_ERROR:
+      $("#weather").html("An unknown error occurred.");
+    break;
+  }
+}
+
+var data_timestamp=Math.round(new Date().getTime() / 1000);
+function getWeather(data_url, forecast_url, temp, wind) {
+
+  // check the weather cache
+  $.ajax ({
+      url: data_url,
+      type: 'GET',
+      cache: false,
+  })
+  // get the forcast
+  .then(function(data){
+    localStorage.WeatherCache = JSON.stringify(data);
+  })
+
+  // display the data
+  .then(function(data){
+    localStorage.ForecastCache = JSON.stringify(data);
+    displayData(temp, wind);
+  })
+  // handle errors
+  .catch(function (errorData) {
+    $("#weather").html("Error retrieving current weather data :: "+ errorData.status);
+  })
+
+  localStorage.timestamp = data_timestamp;
+}
+//
