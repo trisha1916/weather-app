@@ -134,6 +134,7 @@ $(document).ready(function(){
           $(".container").css("background-image", "url(https://s2.postimg.org/i54s2ennd/Beyonce_in_Jamaica.jpg)")
       }
   };
+
   $.getJSON("https://freegeoip.net/json/",function(data2){
   console.log("1");
   console.log(data2);
